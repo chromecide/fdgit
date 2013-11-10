@@ -2,7 +2,8 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(function(){
+define(['git-fs/lib'], function(nodegit){
+    console.log(nodegit);
     var mixin = {
         //called when first mixing in the functionality
         init: function(cfg, callback){

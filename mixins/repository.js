@@ -12,8 +12,9 @@ define(function(){
             for(var key in cfg){
                 self.set('gitrepo.'+key, cfg[key]);
             }
+
             delete cfg.type;
-            
+
             self.mixin('FluxData/http/server', cfg, function(){
                 self.on('http.request', function(req){
                     var self = this;
@@ -53,7 +54,12 @@ define(function(){
         },
         //called when something is published to this channel
         publish: function(topic, data){
-            
+            var self = this;
+            switch(topic){
+                case 'tag':
+                    console.log('creating tag');
+                    break;
+            }
         }
     };
     

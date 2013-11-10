@@ -1,0 +1,30 @@
+{
+  "name": "fdgit",
+  "version": "0.1.1",
+  "description": "Git Mixins for FluxData",
+  "homepage": "https://github.com/chromecide/fdgit",
+  "keywords": [
+    "FluxData",
+    "events",
+    "event-driven",
+    "framework",
+    "mixins",
+    "mixin",
+    "FluxData-Mixin"
+    "git mixin",
+    "git"
+  ],
+  "author": {
+    "name": "Justin Pradier",
+    "email": "chromecide@chromecide.com",
+    "url": "http://chromecide.com/"
+  },
+  "dependencies": {
+  	"amdefine": "0.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chromecide/fdgit.git"
+  },
+  "main": "index.js"
+}

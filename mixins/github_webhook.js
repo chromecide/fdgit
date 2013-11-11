@@ -2,20 +2,10 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(['gift'], function(git){
-
-    
+define(function(){
     var mixin = {
         //called when first mixing in the functionality
         init: function(cfg, callback){
-            var repo = git(__dirname+'https://github.com/chromecide/FluxData.git');
-
-            repo.remote_list(function(){
-                console.log(arguments);
-            });
-
-
-    
             var self = this;
             var errs = false;
             
@@ -33,23 +23,23 @@ define(['gift'], function(git){
 
                     if(request.method=='POST'){
                         var info;
-                        info = JSON.parse(request.body.payload);
-                        var commits = info.commits;
-                        for(var i=0;i<commits.length;i++){
-                            var evData = commits[i];
-                            evData.ref = info.ref;
-                            evData.repository = info.repository;
+                        try{
+                            info = JSON.parse(request.body.payload);
+                            var commits = info.commits;
+                            for(var i=0;i<commits.length;i++){
+                                var evData = commits[i];
+                                evData.ref = info.ref;
+                                evData.repository = info.repository;
 
-                            self.emit('git.commit', evData);
+                                self.emit('git.commit', evData);
+                            }
+
+                            req.publish('content', {
+                                content: 'thanks'
+                            }).publish('end', {});
+                        }catch(e){
+                            self.emit('git.invalidrequest', {error:e});
                         }
-
-                        req.publish('header', {
-                            name: 'Set-Cookie',
-                            value: 'test=1;'
-                        }).publish('content', {
-                            content: 'thanks'
-                        }).publish('end', {});
-
                     }else{
                         response.writeHead(403, {'Content-Type': 'text/plain'});
                         response.end();
@@ -59,17 +49,12 @@ define(['gift'], function(git){
 
                 if(callback){
                     callback(errs, self);
-                };
+                }
             });
         },
         //called when something is published to this channel
         publish: function(topic, data){
-            var self = this;
-            switch(topic){
-                case 'tag':
-                    console.log('creating tag');
-                    break;
-            }
+            
         }
     };
     

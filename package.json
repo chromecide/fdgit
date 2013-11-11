@@ -20,7 +20,8 @@
     "url": "http://chromecide.com/"
   },
   "dependencies": {
-  	"amdefine": "0.0.5"
+  	"amdefine": "0.0.5",
+    "gift": "0.0.x"
   },
   "repository": {
     "type": "git",

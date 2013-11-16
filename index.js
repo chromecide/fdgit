@@ -2,10 +2,12 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(['./mixins/repository'], function(repository){
+define(['./mixins/github_webhook'], function(webhook){
     
     var mixin = {
-        repository: repository
+        github: {
+            webhook: webhook
+        }
     };
     
     return mixin;

@@ -12,8 +12,9 @@ define(function(){
             for(var key in cfg){
                 self.set('gitrepo.'+key, cfg[key]);
             }
+
             delete cfg.type;
-            
+
             self.mixin('FluxData/http/server', cfg, function(){
                 self.on('http.request', function(req){
                     var self = this;
@@ -22,23 +23,23 @@ define(function(){
 
                     if(request.method=='POST'){
                         var info;
-                        info = JSON.parse(request.body.payload);
-                        var commits = info.commits;
-                        for(var i=0;i<commits.length;i++){
-                            var evData = commits[i];
-                            evData.ref = info.ref;
-                            evData.repository = info.repository;
+                        try{
+                            info = JSON.parse(request.body.payload);
+                            var commits = info.commits;
+                            for(var i=0;i<commits.length;i++){
+                                var evData = commits[i];
+                                evData.ref = info.ref;
+                                evData.repository = info.repository;
 
-                            self.emit('git.commit', evData);
+                                self.emit('git.commit', evData);
+                            }
+
+                            req.publish('content', {
+                                content: 'thanks'
+                            }).publish('end', {});
+                        }catch(e){
+                            self.emit('git.invalidrequest', {error:e});
                         }
-
-                        req.publish('header', {
-                            name: 'Set-Cookie',
-                            value: 'test=1;'
-                        }).publish('content', {
-                            content: 'thanks'
-                        }).publish('end', {});
-
                     }else{
                         response.writeHead(403, {'Content-Type': 'text/plain'});
                         response.end();
@@ -48,7 +49,7 @@ define(function(){
 
                 if(callback){
                     callback(errs, self);
-                };
+                }
             });
         },
         //called when something is published to this channel
